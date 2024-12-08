@@ -1,0 +1,13 @@
+name: FDTtranSearcher
+channels:
+  - defaults
+  - bioconda
+  - conda-forge
+
+dependencies:
+  - python=3.9.18
+  - biopython=1.78
+  - blast
+  - numpy
+  - pandas
+  - matplotlib

@@ -94,7 +94,7 @@ def run_miniprot_analysis(
                             strand = '+'
 
                     gff_entry = GFFEntry(
-                        seqid=seqid,  # use the TE ID
+                        seqid=seqid,  
                         source='miniprot',
                         type='protein_coding_region',
                         start=int(start),

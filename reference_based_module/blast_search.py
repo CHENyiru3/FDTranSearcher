@@ -1,5 +1,4 @@
 import os
-import subprocess
 from dataclasses import dataclass
 from typing import List, Dict, Tuple
 from Bio import SeqIO
@@ -9,14 +8,7 @@ from Bio.Blast import NCBIXML
 from Bio.Blast.Applications import NcbiblastnCommandline, NcbimakeblastdbCommandline
 from io import StringIO
 import tempfile
-import datetime
-import csv
-import math
-import argparse
-import yaml
 import os
-from tqdm import tqdm
-import multiprocessing
 
 from GFFEntry_class import GFFEntry, parse_gff_attributes
 

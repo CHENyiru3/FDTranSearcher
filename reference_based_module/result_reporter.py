@@ -13,10 +13,7 @@ import datetime
 import csv
 import math
 import argparse
-import yaml
 import os
-from tqdm import tqdm
-import multiprocessing
 
 from GFFEntry_class import GFFEntry,parse_gff_attributes
 

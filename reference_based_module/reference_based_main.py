@@ -13,9 +13,7 @@ import datetime
 import csv
 import math
 import argparse
-import yaml
 import os
-from tqdm import tqdm
 import multiprocessing
 from multiprocessing import Pool
 

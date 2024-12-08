@@ -1,7 +1,6 @@
 from multiprocessing import Pool
 from Bio import motifs
 from Bio.Seq import Seq
-from tqdm import tqdm
 from typing import List, Tuple
 
 class CompressedTrieNode:
