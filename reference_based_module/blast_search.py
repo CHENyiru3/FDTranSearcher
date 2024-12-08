@@ -117,57 +117,39 @@ def run_blastn_search(
 
         return gff_results
 
-# after getting the GFF entries, extract the transposable elements
-def extract_transposable_elements(
-    gff_entries: List[GFFEntry],
-    genome_fasta_path: str,
-    extension: int = 1500
-) -> List[SeqRecord]:
-    """
-    Extract transposable elements from the genome based on the GFF entries.
 
-    Args:
-        gff_entries (list): List of GFFEntry objects.
-        genome_fasta_path (str): Path to the genome FASTA file.
-    
-    Returns:
-        list: List of SeqRecord objects representing the extracted transposable elements.
-    """
-    # create a dictionary of the genome sequences
+def extract_transposable_elements(gff_entries: List[GFFEntry], genome_fasta_path: str, extension: int = 5000) -> List[SeqRecord]:
     genome_dict = SeqIO.to_dict(SeqIO.parse(genome_fasta_path, "fasta"))
     transposable_elements = []
+    unique_sequences = set()  
 
     for entry in gff_entries:
         chrom = entry.seqid
-        # extend the start and end positions, to get the longer sequence
-        start = entry.start - extension
-        end = entry.end + extension
-        # safety checks
-        if start < 0:
-            start = 0
-        if end > len(genome_dict[chrom].seq):
-            end = len(genome_dict[chrom].seq)
+        extended_start = max(0, entry.start - extension)  
+        extended_end = min(len(genome_dict[chrom].seq), entry.end + extension)  
 
-        te_sequence = genome_dict[chrom].seq[start-1:end]
+        te_sequence = genome_dict[chrom].seq[extended_start:extended_end]  
 
-        te_id = f"TE_{chrom}_{start}_{end}"
-        te_description = f"{chrom}:{start}-{end}"
+        if str(te_sequence) in unique_sequences:  
+            continue
+        unique_sequences.add(str(te_sequence))  
 
-        # create a SeqRecord object
+        te_id = f"TE_{chrom}_{extended_start}_{extended_end}"
+        te_description = f"{chrom}:{extended_start}-{extended_end}"
+
         te_record = SeqRecord(
             te_sequence,
             id=te_id,
             description=te_description
         )
 
-        # add the BLAST match information to the annotations
         te_record.annotations['blast_match'] = {
             'chromosome': chrom,
-            'start': start,
-            'end': end,
+            'start': extended_start,
+            'end': extended_end,
             'original_match_start': entry.start,
             'original_match_end': entry.end,
-            'strand': entry.strand  
+            'strand': entry.strand
         }
 
         transposable_elements.append(te_record)

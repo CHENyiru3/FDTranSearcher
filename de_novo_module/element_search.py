@@ -1,101 +1,41 @@
-#!/usr/bin/env python3
-from typing import Dict, List, Tuple, Optional
-from collections import defaultdict
-from sequence_tools import get_reverse_complement
+import logging
+import os
+import psutil
+from typing import Tuple, List, Dict, Any
+from structure_verification import StructureVerification
 
-
-def build_pattern_hash(seq: str, pattern_size: int) -> Dict[str, List[int]]:
+def process_chunk(args: Tuple[str, str, str, int, Dict[str, Any], List[Dict[str, Any]]]) -> Tuple[str, List[Dict], float]:
     """
-    Build a hash table for patterns of specified size from sequence.
+    Process a single sequence chunk for transposon analysis.
     
     Args:
-        seq: Input DNA sequence
-        pattern_size: Size of patterns to hash
+        args: Tuple containing (chunk_id, sequence, seq_id, base_position, params, reserve_sites)
         
     Returns:
-        Dictionary mapping patterns to lists of their starting positions
+        Tuple of (chunk_id, list of matches, current_memory_usage)
     """
-    pattern_hash = defaultdict(list)
-    for i in range(len(seq) - pattern_size + 1):
-        pattern = seq[i:i + pattern_size]
-        if 'N' not in pattern:
-            pattern_hash[pattern].append(i)
-    return pattern_hash
-
-def find_tir_near_tsd(seq: str, tsd_start: int, tsd2_start: int, pattern_size: int,
-                      min_tir_size: int, max_tir_size: int, max_mismatch: int) -> Optional[Tuple[str, str, int]]:
-    """
-    Search for Terminal Inverted Repeats (TIR) near Target Site Duplications (TSD).
-    
-    Args:
-        seq: Input DNA sequence
-        tsd_start: Start position of first TSD
-        tsd2_start: Start position of second TSD
-        pattern_size: Size of TSD pattern
-        min_tir_size: Minimum size of TIR
-        max_tir_size: Maximum size of TIR
-        max_mismatch: Maximum allowed mismatches in TIR
-        
-    Returns:
-        Tuple of (left_tir, right_tir, tir_size) if found, None otherwise
-    """
-    best_tir = None
-    best_mismatch_count = max_mismatch + 1
-    
-    for tir_size in range(min_tir_size, max_tir_size + 1):
-        left_tir = seq[tsd_start + pattern_size:tsd_start + pattern_size + tir_size]
-        right_tir = seq[tsd2_start - tir_size:tsd2_start]
-        
-        if len(left_tir) != tir_size or len(right_tir) != tir_size:
-            continue
+    chunk_id, sequence, seq_id, base_pos, params, reserve_sites = args
+    try:
+        # Convert reserve_sites back to string format if they are dictionaries
+        if isinstance(reserve_sites[0], dict):
+            reserve_sites = [f"{site['amino_acid']}{site['position']}" for site in reserve_sites]
             
-        right_tir_rc = get_reverse_complement(right_tir)
-        mismatches = sum(a != b for a, b in zip(left_tir, right_tir_rc))
+        verifier = StructureVerification(params, reserve_sites)  # params now includes min_cds_distance
         
-        if mismatches <= max_mismatch and mismatches < best_mismatch_count:
-            best_mismatch_count = mismatches
-            best_tir = (left_tir, right_tir, tir_size)
-    
-    return best_tir
-
-def find_conserved_codon_positions(seq: str, strand: str, search_range: int) -> Tuple[Optional[int], Optional[int], Optional[int]]:
-    """
-    Search for conserved DDE codons in a protein-coding sequence.
-    
-    Args:
-        seq: Input DNA sequence
-        strand: Strand orientation ('+' or '-')
-        search_range: Range around expected positions to search
+        current_process = psutil.Process(os.getpid())
+        memory_usage = current_process.memory_info().rss / 1024 / 1024  # Convert to MB
+        logging.info(f"Processing chunk {chunk_id} of {seq_id} (Memory usage: {memory_usage:.2f} MB)")
         
-    Returns:
-        Tuple of (D301_position, D367_position, E719_position),
-        where positions are relative to sequence start or None if not found
-    """
-    d_codons = {'GAT', 'GAC'}
-    e_codons = {'GAA', 'GAG'}
-    
-    if strand == '-':
-        seq = get_reverse_complement(seq)
-    
-    target_positions = [
-        (301 * 3 - 3, d_codons),  # D301
-        (367 * 3 - 3, d_codons),  # D367
-        (719 * 3 - 3, e_codons)   # E719
-    ]
-    
-    results = []
-    for target_pos, target_codons in target_positions:
-        found_pos = None
-        search_start = max(0, target_pos - search_range)
-        search_end = min(len(seq), target_pos + search_range)
+        matches = list(verifier.verify_structures(sequence, seq_id))
         
-        for pos in range(search_start, search_end, 3):
-            if pos + 3 <= len(seq):
-                codon = seq[pos:pos+3]
-                if codon in target_codons:
-                    found_pos = pos
-                    break
+        for match in matches:
+            for key in ['tsd1_start', 'tsd1_end', 'tir1_start', 'tir1_end',
+                       'tir2_start', 'tir2_end', 'tsd2_start', 'tsd2_end',
+                       'cds_start', 'cds_end']:
+                if key in match and match[key] is not None:
+                    match[key] += base_pos
         
-        results.append(found_pos)
-    
-    return tuple(results)
+        return chunk_id, matches, memory_usage
+    except Exception as e:
+        logging.error(f"Error in chunk {chunk_id}: {str(e)}")
+        return chunk_id, [], 0.0

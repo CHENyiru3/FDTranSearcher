@@ -13,6 +13,21 @@ import os
 
 from GFFEntry_class import GFFEntry, parse_gff_attributes
 
+import os
+import subprocess
+from dataclasses import dataclass
+from typing import List, Dict, Tuple
+from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+from Bio.Blast import NCBIXML
+from Bio.Blast.Applications import NcbiblastnCommandline, NcbimakeblastdbCommandline
+import tempfile
+import os
+
+
+from GFFEntry_class import GFFEntry, parse_gff_attributes
+
 # This section is the implementation of the miniprot analysis, to identify protein region (transposase)
 def run_miniprot_analysis(
     miniprot_path: str,
@@ -44,7 +59,7 @@ def run_miniprot_analysis(
         miniprot_output = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.gff').name
 
         # run miniprot command, with default parameters
-        miniprot_cmd = f"{miniprot_path} -ut {threads} --gff {all_te_fasta_path} {Tpase} > {miniprot_output}"
+        miniprot_cmd = f"{miniprot_path} -ut {threads} -c 50000 -m 10 -p 0.2 -N 200 -O 3 -J 8 -F 8 -K 5M --outn=5000 --outs=0.5 --outc=0.03 --gff {all_te_fasta_path} {Tpase} > {miniprot_output}"
         result = subprocess.run(miniprot_cmd, shell=True, capture_output=True, text=True)
 
         if result.returncode != 0:

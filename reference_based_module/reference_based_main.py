@@ -29,9 +29,9 @@ def run_analysis(
     target_sequence_file: str,
     miniprot_path: str,
     Tpase: str,
-    output_report_file: str,
-    output_csv_file: str,
-    output_gff3_file: str,
+    output_report_file: str = None,
+    output_csv_file: str = None,
+    output_gff3_file: str = None,
     evalue_threshold: float = 1e-5,
     identity_threshold: float = 60.0,
     alignment_length_threshold: int = 30,
@@ -39,7 +39,7 @@ def run_analysis(
     max_hsps: int = 10,
     threads: int = 16,
     # additional optional parameters
-    extension = 2000, mini_size = 2000, max_size = 15000, pattern_size = 8, gap_size = 1500,
+    extension = 3000, mini_size = 2000, max_size = 15000, pattern_size = 8, gap_size = 1500,
     tir_size = 5, mismatch_allowed = 2, report_mode = 'all'
 ):
     try:
@@ -133,7 +133,7 @@ def run_analysis(
                         },
                         'protein_regions': protein_regions,
                         'structures': structures,
-                        'source': 'FDT_pipeline',
+                        'source': 'FDT_reference_pipeline',
                         'architecture_score': architecture_score,
                         'type': 'functional_transposable_element',
                         'strand': blast_match['strand'],  # Use BLAST's strand information
@@ -168,9 +168,6 @@ def run_analysis(
         elif report_mode == "table":
             generate_report(analysis_results, output_report_file)
             print(f"Detailed report saved to {output_report_file}.")
-
-    except Exception as e:
-        print(f"Errors occurred during the analysis: {str(e)}")
     finally:
         for file in [f for f in os.listdir() if f.endswith('.tmp')]:
             os.remove(file)
@@ -196,10 +193,10 @@ def main():
     parser.add_argument("-g", "--genome_fasta_path", required=True, help="Path to the genome FASTA file")
     parser.add_argument("-ref", "--target_sequence_file", required=True, help="Path to the target sequence file")
     parser.add_argument("-miniprot", "--miniprot_path", required=True, help="Path to the miniprot executable")
-    parser.add_argument("-tp", "--Tpase", required=True, help="Path to the hAT sequences file")
-    parser.add_argument("-or", "--output_report_file", required=True, help="Path to the output report file")
-    parser.add_argument("-ot", "--output_csv_file", required=True, help="Path to the output CSV file")
-    parser.add_argument("-gff", "--output_gff3_file", required=True, help="Path to the output GFF3 file")
+    parser.add_argument("-tp", "--Tpase", help="Path to the hAT sequences file")
+    parser.add_argument("-or", "--output_report_file", help="Path to the output report file")
+    parser.add_argument("-ot", "--output_csv_file",  help="Path to the output CSV file")
+    parser.add_argument("-gff", "--output_gff3_file",  help="Path to the output GFF3 file")
     parser.add_argument("--evalue_threshold", type=float, default=1e-5, help="E-value threshold for BLASTN")
     parser.add_argument("--identity_threshold", type=float, default=60.0, help="Identity threshold for BLASTN")
     parser.add_argument("--alignment_length_threshold", type=int, default=30, help="Alignment length threshold for BLASTN")
@@ -218,26 +215,27 @@ def main():
 
     # Now you can use args to access all the parsed arguments
     run_analysis(
-        args.genome_fasta_path,
-        args.target_sequence_file,
-        args.miniprot_path,
-        args.Tpase,
-        args.output_report_file,
-        args.output_csv_file,
-        args.output_gff3_file,
-        args.evalue_threshold,
-        args.identity_threshold,
-        args.alignment_length_threshold,
-        args.max_target_seqs,
-        args.max_hsps,
-        args.threads,
-        args.mini_size,
-        args.max_size,
-        args.pattern_size,
-        args.gap_size,
-        args.tir_size,
-        args.mismatch_allowed,
-        args.report_mode
+        genome_fasta_path=args.genome_fasta_path,
+        target_sequence_file=args.target_sequence_file,
+        miniprot_path=args.miniprot_path,
+        Tpase=args.Tpase,
+        output_report_file=args.output_report_file,
+        output_csv_file=args.output_csv_file,
+        output_gff3_file=args.output_gff3_file,
+        evalue_threshold=args.evalue_threshold,
+        identity_threshold=args.identity_threshold,
+        alignment_length_threshold=args.alignment_length_threshold,
+        max_target_seqs=args.max_target_seqs,
+        max_hsps=args.max_hsps,
+        threads=args.threads,
+        pattern_size=args.pattern_size,
+        gap_size=args.gap_size,
+        tir_size=args.tir_size,
+        mismatch_allowed=args.mismatch_allowed,
+        mini_size=args.mini_size,
+        max_size=args.max_size,
+        report_mode=args.report_mode
+        
     )
 
 if __name__ == "__main__":
