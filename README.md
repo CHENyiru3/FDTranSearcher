@@ -14,7 +14,6 @@ FDTranSearcher is a bioinformatics tool for detecting functional DNA transposons
 - [Background](#background)
 - [Installation](#installation)
 - [Modes](#modes)
-- [Parameters](#parameters)
 - [Usage](#usage)
 - [Citation](#citation)
 
