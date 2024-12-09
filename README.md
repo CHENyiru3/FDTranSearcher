@@ -12,6 +12,7 @@ FDTranSearcher is a bioinformatics tool for detecting functional DNA transposons
 ## Table of Contents
 
 - [Background](#background)
+- [Project Structure](#ProjectStructure)
 - [Installation](#installation)
 - [Modes](#modes)
 - [Usage](#usage)
@@ -33,6 +34,55 @@ However, the search and verification for  **functional DNA transposons with tran
 <img width="1261" alt="b56a72c1fb789708e50bff028954b4c" src="https://github.com/user-attachments/assets/eb9a2094-3bd2-4590-a390-5c90f50d5f1e">
 
 
+## Project Structure
+
+```bash
+FDTranSearcher
+├── FDTranSearcher.sh
+├── Other_scripts
+│   ├── Other_species_test_ref
+│   │   └── extract_DAN_TE.ipynb
+│   ├── Visualization
+│   │   └── Refrence_gff_visualization.ipynb
+│   └── benchmark_integration.zip
+├── README.md
+├── de_novo_module
+│   ├── element_search.py
+│   ├── result_processor.py
+│   ├── sequence_tools.py
+│   ├── structure_verification.py
+│   └── transposon_analyzer.py
+├── environment.yml
+└── reference_based_module
+    ├── Datasets_Ref
+    │   ├── Maize_transposon
+    │   │   ├── DNA_DTA.txt
+    │   │   ├── DNA_DTC.txt
+    │   │   ├── DNA_DTH.txt
+    │   │   ├── DNA_DTM.txt
+    │   │   └── DNA_DTT.txt
+    │   └── Plant_tranpoases
+    │       ├── Tpase_DTA.fasta
+    │       ├── Tpase_DTC.fasta
+    │       ├── Tpase_DTH.fasta
+    │       ├── Tpase_DTM.fasta
+    │       ├── Tpase_DTT.fasta
+    │       └── Tpase_all.fasta
+    ├── Example_results
+    │   ├── DTA_fucntional_DNA_TE.gff3
+    │   ├── DTC_fucntional_DNA_TE.gff3
+    │   ├── DTH_fucntional_DNA_TE.gff3
+    │   ├── DTM_fucntional_DNA_TE.gff3
+    │   ├── DTT_fucntional_DNA_TE.gff3
+    │   ├── TE_chromosome_distribution.csv
+    │   └── TE_statistics.csv
+    ├── GFFEntry_class.py
+    ├── architecture_identification.py
+    ├── blast_search.py
+    ├── miniprot_filter.py
+    ├── reference_based_main.py
+    └── result_reporter.py
+```
 
 ## Installation
 
