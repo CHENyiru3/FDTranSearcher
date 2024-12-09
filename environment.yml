@@ -1,13 +1,55 @@
 name: FDTtranSearcher
 channels:
-  - defaults
   - bioconda
+  - r
+  - defaults
   - conda-forge
-
 dependencies:
-  - python=3.9.18
-  - biopython=1.78
-  - blast
-  - numpy
-  - pandas
-  - matplotlib
+  - _libgcc_mutex=0.1=main
+  - _openmp_mutex=5.1=1_gnu
+  - biopython=1.78=py39h7f8727e_0
+  - blas=1.0=mkl
+  - blast=2.5.0=hc0b0e79_3
+  - boost=1.82.0=py39h06a4308_2
+  - bottleneck=1.4.2=py39ha9d4c09_0
+  - bzip2=1.0.8=h5eee18b_6
+  - ca-certificates=2024.11.26=h06a4308_0
+  - icu=73.1=h6a678d5_0
+  - intel-openmp=2023.1.0=hdb19cb5_46306
+  - ld_impl_linux-64=2.40=h12ee557_0
+  - libboost=1.82.0=h109eef0_2
+  - libffi=3.4.4=h6a678d5_1
+  - libgcc-ng=11.2.0=h1234567_1
+  - libgomp=11.2.0=h1234567_1
+  - libstdcxx-ng=11.2.0=h1234567_1
+  - lz4-c=1.9.4=h6a678d5_1
+  - mkl=2023.1.0=h213fc3f_46344
+  - mkl-service=2.4.0=py39h5eee18b_1
+  - mkl_fft=1.3.11=py39h5eee18b_0
+  - mkl_random=1.2.8=py39h1128e8f_0
+  - ncurses=6.4=h6a678d5_0
+  - numexpr=2.10.1=py39h3c60e43_0
+  - numpy=1.26.4=py39h5f9d8c6_0
+  - numpy-base=1.26.4=py39hb5e798b_0
+  - openssl=3.0.15=h5eee18b_0
+  - pandas=2.2.3=py39h6a678d5_0
+  - pip=24.2=py39h06a4308_0
+  - psutil=5.9.0=py39h5eee18b_0
+  - py-boost=1.82.0=py39h3c18c91_2
+  - python=3.9.18=h955ad1f_0
+  - python-dateutil=2.9.0post0=py39h06a4308_2
+  - python-tzdata=2023.3=pyhd3eb1b0_0
+  - pytz=2024.1=py39h06a4308_0
+  - readline=8.2=h5eee18b_0
+  - setuptools=75.1.0=py39h06a4308_0
+  - six=1.16.0=pyhd3eb1b0_1
+  - sqlite=3.45.3=h5eee18b_0
+  - tbb=2021.8.0=hdb19cb5_0
+  - tk=8.6.14=h39e8969_0
+  - tqdm=4.66.5=py39h2f386ee_0
+  - tzdata=2024b=h04d1e81_0
+  - wheel=0.44.0=py39h06a4308_0
+  - xz=5.4.6=h5eee18b_1
+  - zlib=1.2.13=h5eee18b_1
+  - zstd=1.5.6=hc292b87_0
+

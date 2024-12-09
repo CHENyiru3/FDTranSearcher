@@ -125,7 +125,7 @@ def run_analysis(
             if protein_regions:
                 try:
                     structures = analyze_structures(
-                        str(te_record.seq), protein_regions
+                        str(te_record.seq), protein_regions, pattern_size=pattern_size, gap_size=gap_size, tir_size=tir_size, mismatch_allowed=mismatch_allowed, mini_size=mini_size, max_size=max_size
                     )
 
                     # Check if structures are empty

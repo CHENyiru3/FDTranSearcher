@@ -343,7 +343,7 @@ def calculate_protein_proximity_score(tir1_start, tir1_end, tir2_start, tir2_end
     proximity_score = max(0, 100 - (avg_min_distance / structure_length) * 200)
     return proximity_score
 
-def analyze_structures(seq: str, protein_regions: List[Tuple[int, int]], pattern_size=8, gap_size=1500, tir_size=5, mismatch_allowed=1):
+def analyze_structures(seq: str, protein_regions: List[Tuple[int, int]], pattern_size=8, gap_size=1500, tir_size=5, mismatch_allowed=1, mini_size = 2000, max_size = 15000):
     matches = structure_verification(seq, pattern_size, gap_size, tir_size, mismatch_allowed)
     seq_length = len(seq)
 
@@ -360,7 +360,7 @@ def analyze_structures(seq: str, protein_regions: List[Tuple[int, int]], pattern
                for p_start, p_end in protein_regions):
             continue
 
-        scores = score_structure_match(match, protein_regions, seq_length)
+        scores = score_structure_match(match, protein_regions, seq_length,mini_size,max_size)
 
         structure_info = {
             'TSD1': (tsd1_start, tsd1_end),
