@@ -1,6 +1,13 @@
 # FDTranSearcher
 
-FDTranSearcher is a tool designed for detecting functional DNA transposons in genomes. Currently, it supports Linux and macOS systems. For Windows users, BLAST+ must be manually downloaded because conda does not provide BLAST for Windows.
+FDTranSearcher is a bioinformatics tool for detecting functional DNA transposons in genomic sequences.
+
+### Supported Operating Systems
+- Linux ✅
+- macOS ✅
+- Windows (with limitations) ⚠️
+
+> **Important**: Windows users must manually download and install BLAST+ from the [NCBI website](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.5.0/), as conda does not provide BLAST packages for Windows.
 
 ## Table of Contents
 
@@ -15,43 +22,64 @@ FDTranSearcher is a tool designed for detecting functional DNA transposons in ge
 
 Transposon elements (TEs) are elements that can move around the genome and can be broadly classified into two main categories:  copy-and-paste retrotransposons and cut-and-paste DNA transposons. Studies have shown that DNA transposons play important roles in plant genomes for gene regulation and evolution.
 
-However, the search and verification for functional DNA transposons with transposase in genomes is still a major challenge. To facilitate further research, we plan to develop tools for finding functional DNA transposons in the maize genome, and try to expand to other plant genomes. In order to address different application scenarios, we intend to design three modules: 
-- pipeline construction based on existing databases to find known functional DNA transposons 
-- de novo algorithms based on structural features to find unknown functional DNA transposons
-- build a ensemble tool for comprehensive functional DNA transposon annotation
+However, the search and verification for  **functional DNA transposons with transposase activity**  in genomes is still a major challenge. To facilitate further research, we plan to develop tools for finding functional DNA transposons in the maize genome, and try to expand to other plant genomes. In order to address different application scenarios, we designed three modules: 
+1. **Reference-based Module**  
+   A pipeline leveraging existing databases to identify known functional DNA transposons.
+2. **De Novo Module**  
+   An algorithm that uses structural features to predict unknown functional DNA transposons.
+3. **Ensemble Tool mode**  
+   A comprehensive module that integrates the outputs of both pipelines for robust functional DNA transposon annotation.
+
+
+<img width="1261" alt="b56a72c1fb789708e50bff028954b4c" src="https://github.com/user-attachments/assets/eb9a2094-3bd2-4590-a390-5c90f50d5f1e">
+
+
 
 ## Installation
 
 ### Using Conda (Recommended)
 
-After downloading the source code, we recommend creating a virtual environment that meets the requirements of this tool. Run the following commands in your terminal:
+After downloading the source code, we recommend creating a virtual environment that meets the requirements of this tool. Follow the commands below:
 
 ```bash
+git clone https://github.com/CHENyiru3/FDTranSearcher
 cd FDTranSearcher
+# Create and activate the Conda environment:
 conda env create -f environment.yml
 conda activate FDTranSearcher
 ```
 
+
 ### Manual Installation
+If you prefer a manual setup, ensure you meet the following system and package requirements:
 
-Requirements:
+#### Environment Requirements
+- **Python**: Version >= 3.9.18  
+- **BLAST**: Version >= 2.5.0  
+- **Operating System**: Ubuntu 20.04.2 LTS (Recommended)  
 
-- Python >=3.9.18
-- BLAST >= 2.5.0
+#### Required Python Packages
 - Ubuntu  20.04.2 LTS(Recommended)
+- BLAST >= 2.5.0
+- Python >=3.9.18
 - Required Python packages:
   - biopython >= 1.78
-  - PyYAML >=6.0.2
+  - psutil=6.1.0
+  - tqdm=4.66.2
+  - matplotlib
   - pandas
- 
+  - numpy
+
 ### Additional Tool Installation
 
-Additionally, you need to manually install the required open-source tool [miniprot](https://github.com/lh3/miniprot). If you have problems installing miniprot, you can also [click](https://github.com/lh3/miniprot) to jump to miniprot.:
-
+You also need to manually install the open-source tool miniprot. Use the following commands to clone and build it:
 ```bash
 git clone https://github.com/lh3/miniprot.git
 cd miniprot && make
 ```
+If you encounter any issues, refer to the [official miniprot GitHub page](https://github.com/lh3/miniprot) for additional instructions or troubleshooting.
+
+
 ## Modes
 
 FDTranSearcher has three modes:
@@ -174,6 +202,7 @@ Enter the appropriate parameters when you see the following:
 
 ```bash
 Running both reference-based and de novo modules...
+
 Please enter parameters for the reference-based module, e.g., -g file -o output:
 
 Please enter parameters for the de novo module, e.g., -i file -o output:
