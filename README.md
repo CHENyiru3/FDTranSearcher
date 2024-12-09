@@ -54,21 +54,17 @@ conda activate FDTranSearcher
 If you prefer a manual setup, ensure you meet the following system and package requirements:
 
 #### Environment Requirements
-- **Python**: Version >= 3.9.18  
-- **BLAST**: Version >= 2.5.0  
-- **Operating System**: Ubuntu 20.04.2 LTS (Recommended)  
+- **Operating System**: Ubuntu 20.04.2 LTS (Recommended)
+  
+- **Python**: Version >= 3.9.18
 
-#### Required Python Packages
-- Ubuntu  20.04.2 LTS(Recommended)
-- BLAST >= 2.5.0
-- Python >=3.9.18
-- Required Python packages:
-  - biopython >= 1.78
-  - psutil=6.1.0
-  - tqdm=4.66.2
-  - matplotlib
-  - pandas
-  - numpy
+----conda packages----
+- **BLAST**: Version >= 2.5.0  
+- biopython >= 1.78
+- psutil=6.1.0
+- tqdm=4.66.2
+- pandas
+- numpy
 
 ### Additional Tool Installation
 
