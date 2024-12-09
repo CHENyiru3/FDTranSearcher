@@ -301,6 +301,8 @@ Please enter parameters for the de novo module, e.g., -i file -o output:
 Please enter the path to save the final merged results, e.g., /path/to/output.gff:
 ```
 
+If you have any problem about current tool, please pull a request (or contact us if possible).
+
 ## Citation
 
 [miniprot](https://github.com/lh3/miniprot) for finding transposase sequences
