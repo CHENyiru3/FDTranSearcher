@@ -1,6 +1,6 @@
 # FDTranSearcher
 
-FDTranSearcher is a bioinformatics tool for detecting functional DNA transposons in genomic sequences.
+FDTranSearcher is a bioinformatics tool for detecting functional DNA transposons in plants genomic sequences. It is a part of ZJE BMI3 ICA.  
 
 ### Supported Operating Systems
 - Linux ✅
