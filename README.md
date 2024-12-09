@@ -155,7 +155,7 @@ The built-in transposase reference can be used in most plants; for easily downlo
 Here is an example usage:
 
 ```bash
-usage: reference_based_main.py [-h] -g GENOME_FASTA_PATH
+usage: bash FDTranSearcher.sh r [-h] -g GENOME_FASTA_PATH
                                -ref_dna TARGET_SEQUENCE_FILE
                                -miniprot MINIPROT_PATH
                                [-ref_tp TPASE]
@@ -267,7 +267,7 @@ optional arguments:
 You don't need any reference files for the de-novo module. Here is an example usage:
 
 ```bash
-usage: transposon_analyzer.py [-h] --input INPUT
+usage: bash FDTranSearcher.sh d [-h] --input INPUT
                               --output-prefix OUTPUT_PREFIX
                               [--min-tsd-pattern-size MIN_TSD_PATTERN_SIZE]
                               [--max-tsd-pattern-size MAX_TSD_PATTERN_SIZE]
