@@ -105,6 +105,8 @@ To use the reference-based module, make sure you have two reference files:
 
 The consensus datasets for [DNA transposons](https://mobilednajournal.biomedcentral.com/articles/10.1186/s13100-018-0144-1) and [transposases](https://www.nature.com/articles/nature22971) for the five DNA TE families in maize, used for testing, will be automatically downloaded as built-in references. 
 
+The built-in transposase reference can be used in most plants; for easily downloading vaild consensus transposon DNA sequences of other species, we recommend you search in [PlantRep](http://www.plantrep.cn/).
+
 Here is an example usage:
 
 ```bash
